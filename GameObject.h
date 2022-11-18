@@ -50,6 +50,9 @@ namespace gm {
 		virtual bool collide(const sf::Vector2f& point) const;
 
 		virtual bool collide(const sf::FloatRect& rect) const;
+
+		// Default destructor
+		~GameObject();
 	};
 }
 

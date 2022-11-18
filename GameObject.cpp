@@ -42,3 +42,7 @@ bool GameObject::collide(const Vector2f& point) const {
 bool GameObject::collide(const FloatRect& rect) const {
 	return collider.intersects(rect);
 }
+
+GameObject::~GameObject() {
+
+}

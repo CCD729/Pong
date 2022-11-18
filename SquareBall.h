@@ -1,5 +1,5 @@
-#ifndef BOX_H
-#define BOX_H
+#ifndef SQUARE_BALL_H
+#define SQUARE_BALL_H
 
 #include "GameObject.h"
 
@@ -13,14 +13,14 @@ namespace gm {
         Right = 1
     };
 
-    class Box :
+    class SquareBall :
         public GameObject
     {
     protected:
         sf::RectangleShape body;
         MovementDirection direction;
     public:
-        Box(const sf::Vector2f& position, const sf::Vector2f& size);
+        SquareBall(const sf::Vector2f& position, const sf::Vector2f& size);
 
         virtual void update(sf::RenderWindow& window, float deltaTime) override;
 
@@ -28,7 +28,7 @@ namespace gm {
 
         virtual void setPosition(const sf::Vector2f& position) override;
 
-        // Move the box from its current position to a new one with a specified velocity
+        // Move from current position to a new one with a specified velocity
         virtual void move(const sf::Vector2f& velocity) override;
 
         virtual void setMovmentDirection(MovementDirection direction);
@@ -38,6 +38,16 @@ namespace gm {
         const sf::Color& getFillColor() const;
 
         void setFillColor(const sf::Color& color);
+
+        const sf::Vector2f& getVelocity() const;
+
+        void getVelocity(const sf::Vector2f& velocity);
+
+        // Changing velocity direction and maybe magnitude when there's a collision 
+        void Bounce(const sf::FloatRect& other);
+
+        // overloaded Bounce when it reaches the top/bottom of screen
+        void Bounce();
     };
 }
 
