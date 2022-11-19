@@ -16,11 +16,17 @@
  /* Our Includes */
 #include "SquareBall.h"
 #include "Paddle.h"
+#include "PlayerController.h"
 
 // Place our classes, functions, variables, and so forth in their own namespace to avoid naming collisions
 namespace gm {
 	const int GameWidth = 640;
 	const int GameHeight = 640;
+
+	enum GameMode {
+		OnePlayer = 0,
+		TwoPlayer = 1
+	};
 
 	/* Our Game Class                               *
 	 * Implements the Game Loop Programming Pattern */
@@ -31,11 +37,19 @@ namespace gm {
 		// For tracking/maintaining delta time
 		sf::Clock clock;
 		float deltaTime;
+		// Game mode (stretch goal)
+		GameMode gameMode;
 		// Our game objects
 		SquareBall ball;
 		Paddle paddle1;
 		Paddle paddle2;
-		// ScoreTracker
+		// PlayerController
+		PlayerController playerController;
+		// AI Controller
+		//AIController aiController;
+		// ScoreTracker UI
+			//TODO
+		//SoundManager
 			//TODO
 
 	public:
@@ -51,6 +65,12 @@ namespace gm {
 		// Destructor
 		~Game();
 	};
+
+	//Help functions
+	int Rand(int min, int max);
+	float Randf(float min, float max);
+	sf::Color hsv(int hue, float sat, float val);
+
 }
 
 #endif

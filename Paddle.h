@@ -34,7 +34,7 @@ namespace gm {
 
         void setFillColor(const sf::Color& color);
 
-        virtual void setMovmentDirection(MovementDirection direction);
+        virtual void setMovementDirection(MovementDirection direction);
 
         virtual MovementDirection getMovementDirection() const;
 

@@ -28,7 +28,7 @@ void Paddle::move(const Vector2f& velocity) {
 	body.setPosition(position);
 }
 
-void Paddle::setMovmentDirection(MovementDirection direction) {
+void Paddle::setMovementDirection(MovementDirection direction) {
 	this->direction = direction;
 }
 

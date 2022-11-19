@@ -11,7 +11,7 @@ Vector2f paddle1Position = Vector2f(30, GameHeight / 2);
 Vector2f paddle2Position = Vector2f(GameWidth-30, GameHeight / 2);
 
 // Implement constructor, this will effectively be a setup function as the game gets more complex
-Game::Game() : window(VideoMode(GameWidth, GameHeight), "Game"), clock(), deltaTime(0), ball(centerPosition, Vector2f(10,10)), paddle1(paddle1Position, Vector2f(12.5, 150)), paddle2(paddle2Position, Vector2f(12.5, 150)) {
+Game::Game() : window(VideoMode(GameWidth, GameHeight), "Game"), clock(), deltaTime(0), ball(centerPosition, Vector2f(10,10)), paddle1(paddle1Position, Vector2f(10, 120)), paddle2(paddle2Position, Vector2f(10, 120)), gameMode(GameMode::OnePlayer) {
 	// Set our fps to 60
 	window.setFramerateLimit(60);
 }
@@ -19,10 +19,17 @@ Game::Game() : window(VideoMode(GameWidth, GameHeight), "Game"), clock(), deltaT
 void Game::run() {
 	// This is our game loop!
 	// All input, logic, and rendering should be handled here
-	// First recenter the ball
+	
+	// Setup
+	//gameMode = GameMode::TwoPlayer;
+	// First recenter the ball and paddle
 	ball.setPosition(centerPosition - Vector2f(ball.getSize().x / 2, ball.getSize().y / 2));
 	paddle1.setPosition(paddle1Position - Vector2f(paddle1.getSize().x / 2, paddle1.getSize().y / 2));
 	paddle2.setPosition(paddle2Position - Vector2f(paddle2.getSize().x / 2, paddle2.getSize().y / 2));
+
+	// Start moving the ball at random direction
+	ball.setVelocity(Vector2f(120,Randf(-20,20)));
+
 	while (window.isOpen())
 	{
 		// Every frame we...
@@ -50,33 +57,40 @@ void Game::handleInput() {
 		if (event.type == Event::Closed)
 			window.close();
 
-		// Handle keyboard input to move box 1
-		if (event.type == Event::KeyPressed) {
-			if (event.key.code == Keyboard::Up) {
-				//paddle1.setMovmentDirection(MovementDirection::Up);
-			}else if (event.key.code == Keyboard::Down) {
-				//paddle1.setMovmentDirection(MovementDirection::Down);
-			}
+		// Handle keyboard input to move paddle 1 (pack in player controller)
+		if (gameMode == GameMode::OnePlayer) {
+			playerController.handleInput(event,paddle1,GameHeight,0);
+			// Simple AI for p2 control (decision)
+			//aiController.Sense(paddle2, GameHeight);
 		}
-		/*
-		if (event.type == Event::KeyReleased) {
-			if (event.key.code == Keyboard::Left && paddle1.getMovementDirection() == MovementDirection::Left) {
-				//paddle1.setMovmentDirection(MovementDirection::None);
-			}
-			if (event.key.code == Keyboard::Right && paddle1.getMovementDirection() == MovementDirection::Right) {
-				//paddle1.setMovmentDirection(MovementDirection::None);
-			}
+		else {
+			playerController.handleInput(event, paddle1, GameHeight, 1);
+			playerController.handleInput(event, paddle2, GameHeight, 2);
 		}
-		*/
 	}
+
+
+
 }
 
 // Implements the update portion of our Game Loop Programming Pattern
 void Game::update() {
+	// Update Inputs
+		if (gameMode == GameMode::OnePlayer) {
+			playerController.update(paddle1,GameHeight);
+			// AI update
+			//aiController.Sense(paddle2, GameHeight);
+		}
+		else {
+			playerController.update(paddle1, GameHeight);
+			playerController.update(paddle2, GameHeight);
+		}
+
 	// Update our boxes (i.e., move them based on the block's specified movement direction)
 	ball.update(window, deltaTime);
 	paddle1.update(window, deltaTime);
 	paddle2.update(window, deltaTime);
+	
 
 	// Collision handling with paddles
 	/*if (ball.collide(paddle1.getCollider())) {
@@ -107,4 +121,60 @@ void Game::render() {
 // Implement destructor, make sure we free up any memory that we allocated here!
 Game::~Game() {
 
+}
+
+
+//Help functions
+//Randoms
+int gm::Rand(int min, int max) // Ranged
+{
+	static bool setup = true;
+	if (setup)
+	{
+		srand(unsigned int(time(NULL))); //seeding
+		setup = false;
+	}
+	int tmp = min + rand() % ((max + 1) - min);
+	return (tmp == 0) ? 1 : tmp;
+}
+
+float gm::Randf(float min, float max) {
+	static bool setup = true;
+	if (setup)
+	{
+		srand(unsigned int(time(NULL))); //seeding
+		setup = false;
+	}
+	return (min + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (max - min))));
+}
+
+//Implementation of HSV Tool Function by Tenry
+sf::Color gm::hsv(int hue, float sat, float val)
+{
+	hue %= 360;
+	while (hue < 0) hue += 360;
+
+	if (sat < 0.f) sat = 0.f;
+	if (sat > 1.f) sat = 1.f;
+
+	if (val < 0.f) val = 0.f;
+	if (val > 1.f) val = 1.f;
+
+	int h = hue / 60;
+	float f = float(hue) / 60 - h;
+	float p = val * (1.f - sat);
+	float q = val * (1.f - sat * f);
+	float t = val * (1.f - sat * (1 - f));
+
+	switch (h)
+	{
+	default:
+	case 0:
+	case 6: return sf::Color(Uint8(val * 255), Uint8(t * 255), Uint8(p * 255));
+	case 1: return sf::Color(Uint8(q * 255), Uint8(val * 255), Uint8(p * 255));
+	case 2: return sf::Color(Uint8(p * 255), Uint8(val * 255), Uint8(t * 255));
+	case 3: return sf::Color(Uint8(p * 255), Uint8(q * 255), Uint8(val * 255));
+	case 4: return sf::Color(Uint8(t * 255), Uint8(p * 255), Uint8(val * 255));
+	case 5: return sf::Color(Uint8(val * 255), Uint8(p * 255), Uint8(q * 255));
+	}
 }
