@@ -5,7 +5,7 @@
 
 namespace gm {
     // Movement speed
-    const int PlayerMovementSpeedPerSecond = 300;
+    const int PlayerMovementSpeedPerSecond = 250;
 
     enum MovementDirection {
         None = 0,

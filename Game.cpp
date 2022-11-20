@@ -60,16 +60,17 @@ void Game::handleInput() {
 		// Handle keyboard input to move paddle 1 (pack in player controller)
 		if (gameMode == GameMode::OnePlayer) {
 			playerController.handleInput(event,paddle1,GameHeight,0);
-			// Simple AI for p2 control (decision)
-			//aiController.Sense(paddle2, GameHeight);
 		}
 		else {
 			playerController.handleInput(event, paddle1, GameHeight, 1);
 			playerController.handleInput(event, paddle2, GameHeight, 2);
 		}
 	}
-
-
+	// AI should be able to sense even if there's no event
+	if (gameMode == GameMode::OnePlayer) {
+		// Simple AI for p2 control (decision)
+		aiController.sense(paddle2, ball);
+	}
 
 }
 
@@ -79,7 +80,7 @@ void Game::update() {
 		if (gameMode == GameMode::OnePlayer) {
 			playerController.update(paddle1,GameHeight);
 			// AI update
-			//aiController.Sense(paddle2, GameHeight);
+			aiController.update(paddle2, GameHeight);
 		}
 		else {
 			playerController.update(paddle1, GameHeight);
