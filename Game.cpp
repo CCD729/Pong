@@ -94,15 +94,45 @@ void Game::update() {
 	
 
 	// Collision handling with paddles
-	/*if (ball.collide(paddle1.getCollider())) {
-
+	if (ball.collide(paddle1.getCollider())) {
+		//Determine which direction they collided
+			//TODO
+		
+		// If hitting on side
+		//Reset ball position to Avoid weird stick (temporary)
+		ball.setPosition(Vector2f(paddle1.getPosition().x + paddle1.getSize().x + 0.1f, ball.getPosition().y));
+		//Regular situation: bump back with a speedup and a slight angle change
+		if (paddle1.getMovementDirection() == MovementDirection::Up) {
+			ball.setVelocity(Vector2f((-1) * (ball.getVelocity().x-40), ball.getVelocity().y-70));
+		}
+		else if (paddle1.getMovementDirection() == MovementDirection::Down) {
+			ball.setVelocity(Vector2f((-1) * (ball.getVelocity().x - 40), ball.getVelocity().y + 70));
+		}
+		else {
+			ball.setVelocity(Vector2f((-1) * (ball.getVelocity().x - 40), ball.getVelocity().y));
+		}
 	}
 	else if (ball.collide(paddle2.getCollider())) {
+		//Determine which direction they collided
+			//TODO
 
+		// If hitting on side
+		//Reset ball position to Avoid weird stick (temporary)
+		ball.setPosition(Vector2f(paddle2.getPosition().x - ball.getSize().x - 0.1f, ball.getPosition().y));
+
+		if (paddle2.getMovementDirection() == MovementDirection::Up) {
+			ball.setVelocity(Vector2f((-1) * (ball.getVelocity().x + 40), ball.getVelocity().y - 70));
+		}
+		else if (paddle2.getMovementDirection() == MovementDirection::Down) {
+			ball.setVelocity(Vector2f((-1) * (ball.getVelocity().x + 40), ball.getVelocity().y + 70));
+		}
+		else {
+			ball.setVelocity(Vector2f((-1) * (ball.getVelocity().x + 40), ball.getVelocity().y));
+		}
 	} //If hitting up or down edge
 	else if (ball.getPosition().y <= 0 || ball.getPosition().y >= (GameHeight - ball.getSize().y)) {
-
-	}*/
+		ball.setVelocity(Vector2f(ball.getVelocity().x, (-1) * ball.getVelocity().y));
+	}
 }
 
 // Implements the render portion of our Game Loop Programming Pattern
