@@ -36,6 +36,9 @@
     <ClCompile Include="AIController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ScoreUI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -54,6 +57,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="AIController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreUI.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

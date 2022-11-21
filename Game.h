@@ -18,6 +18,7 @@
 #include "Paddle.h"
 #include "PlayerController.h"
 #include "AIController.h"
+#include "ScoreUI.h"
 
 // Place our classes, functions, variables, and so forth in their own namespace to avoid naming collisions
 namespace gm {
@@ -27,6 +28,11 @@ namespace gm {
 	enum GameMode {
 		OnePlayer = 0,
 		TwoPlayer = 1
+	};
+	enum GameState {
+		Menu = 0,
+		InGame = 1,
+		EndGame = 2
 	};
 
 	/* Our Game Class                               *
@@ -40,16 +46,26 @@ namespace gm {
 		float deltaTime;
 		// Game mode (stretch goal)
 		GameMode gameMode;
-		// Our game objects
+		// Game state (menu stretch goal)
+		GameState gameState;
+		// Game Font
+		sf::Font font; 
+		// Menu State Objects
+		sf::Text title, gm1Text, gm2Text, beginPrompt;
+		sf::RectangleShape modeSelector;
+		// Game State Objects
 		SquareBall ball;
 		Paddle paddle1;
 		Paddle paddle2;
+		ScoreUI scoreUI;
+		sf::Clock respawnClock;
+		bool goal = false;
+		// End State Objects
+		sf::Text endMessage, restartPrompt;
 		// PlayerController
 		PlayerController playerController;
 		// AI Controller
 		AIController aiController;
-		// ScoreTracker UI
-			//TODO
 		//SoundManager
 			//TODO
 
@@ -63,6 +79,9 @@ namespace gm {
 		void handleInput();
 		void update();
 		void render();
+
+		// State Manager
+		void GameStateChange(GameState state);
 		// Destructor
 		~Game();
 	};
