@@ -58,6 +58,7 @@ namespace gm {
 		Paddle paddle1;
 		Paddle paddle2;
 		ScoreUI scoreUI;
+		int maxScore;
 		sf::Clock respawnClock;
 		bool goal = false;
 		// End State Objects

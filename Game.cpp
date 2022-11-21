@@ -11,7 +11,7 @@ Vector2f paddle1Position = Vector2f(30, GameHeight / 2);
 Vector2f paddle2Position = Vector2f(GameWidth-30, GameHeight / 2);
 
 // Implement constructor, this will effectively be a setup function as the game gets more complex
-Game::Game() : window(VideoMode(GameWidth, GameHeight), "Game"), clock(), deltaTime(0), ball(centerPosition, Vector2f(10,10)), paddle1(paddle1Position, Vector2f(10, 120)), paddle2(paddle2Position, Vector2f(10, 120)), gameMode(GameMode::OnePlayer), gameState(GameState::Menu) {
+Game::Game() : window(VideoMode(GameWidth, GameHeight), "Game"), clock(), deltaTime(0), ball(centerPosition, Vector2f(10,10)), paddle1(paddle1Position, Vector2f(10, 120)), paddle2(paddle2Position, Vector2f(10, 120)), gameMode(GameMode::OnePlayer), gameState(GameState::Menu), maxScore(7) {
 	// Set our fps to 60
 	window.setFramerateLimit(60);
 	// Initial Setup for menu UI
@@ -206,10 +206,10 @@ void Game::update() {
 		else if (ball.getPosition().y <= 0 || ball.getPosition().y >= (GameHeight - ball.getSize().y)) {
 			ball.setVelocity(Vector2f(ball.getVelocity().x, (-1) * ball.getVelocity().y));
 			if (ball.getPosition().y <= 0) {
-				ball.setPosition(Vector2f(ball.getPosition().x, 0.1));
+				ball.setPosition(Vector2f(ball.getPosition().x, 0.1f));
 			}
 			else {
-				ball.setPosition(Vector2f(ball.getPosition().x, GameHeight - ball.getSize().y-0.1));
+				ball.setPosition(Vector2f(ball.getPosition().x, GameHeight - ball.getSize().y-0.1f));
 			}
 		} // If goal
 		else if (!goal && (ball.getPosition().x <= 0 || ball.getPosition().x >= (GameHeight - ball.getSize().x))) {
@@ -228,18 +228,18 @@ void Game::update() {
 			ball.setVelocity(Vector2f(0, 0));
 		}
 		// ScoreUI update
-		scoreUI.update(window);
+		scoreUI.update(window, maxScore);
 
 		// Winning check / respawn ball
 		if (goal) {
 			// Win
-			if (scoreUI.GetScore().x == 2) {
+			if (scoreUI.GetScore().x == 7) {
 				endMessage.setString("P1 wins");
 				//endMessage.setPosition(Vector2f(0,0));
 				goal = false;
 				GameStateChange(GameState::EndGame);
 			}
-			else if (scoreUI.GetScore().y == 2) {
+			else if (scoreUI.GetScore().y == 7) {
 				if (gameMode == GameMode::OnePlayer) {
 					endMessage.setString("COM wins");
 					goal = false;
@@ -255,7 +255,7 @@ void Game::update() {
 			else { // On Timer respawn the ball
 				if (respawnClock.getElapsedTime().asSeconds() >= 3) {
 					ball.setPosition(centerPosition - Vector2f(ball.getSize().x / 2, ball.getSize().y / 2));
-					ball.setVelocity(Vector2f(pow(-1,Rand(1,2)) *120, Randf(-30, 30)));
+					ball.setVelocity(Vector2f(float(pow(-1,Rand(1,2))) *120.f, Randf(-30, 30)));
 					goal = false;
 				}
 			}

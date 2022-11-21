@@ -8,13 +8,13 @@ namespace gm {
 	{
 	protected:
 		sf::Vector2i score;
-		sf::Text scoreText1, scoreText2;
+		sf::Text scoreText1, scoreText2, maxScoreText;
 		sf::Font font;
 	public:
 		ScoreUI();
 		const sf::Vector2i& GetScore() const;
 		void SetScore(const sf::Vector2i score);
-		void update(sf::RenderWindow& window);
+		void update(sf::RenderWindow& window, int maxScore);
 		void render(sf::RenderWindow& window);
 		~ScoreUI();
 	};
