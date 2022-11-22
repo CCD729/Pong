@@ -68,6 +68,7 @@ Game::Game() : window(VideoMode(GameWidth, GameHeight), "Game"), clock(), deltaT
 	modeSelector.setFillColor(Color::White);
 	modeSelector.setSize(Vector2f(10, 10));
 	modeSelector.setPosition(Vector2f(200,255)); //First position 200,255 second position 200,355
+
 }
 
 void Game::run() {
@@ -107,13 +108,16 @@ void Game::handleInput() {
 				if (gameMode == GameMode::OnePlayer && event.key.code == Keyboard::Down) {
 					gameMode = GameMode::TwoPlayer;
 					modeSelector.setPosition(Vector2f(200, 355));
+					soundManager.PlaySFX(SFX::button);
 				}
 				else if (gameMode == GameMode::TwoPlayer && event.key.code == Keyboard::Up) {
 					gameMode = GameMode::OnePlayer;
 					modeSelector.setPosition(Vector2f(200, 255));
+					soundManager.PlaySFX(SFX::button);
 				}
 				else if (event.key.code == Keyboard::Space) {
 					GameStateChange(GameState::InGame);
+					soundManager.PlaySFX(SFX::button);
 				}
 			}
 		}
@@ -131,9 +135,11 @@ void Game::handleInput() {
 			if (event.type == Event::KeyPressed) {
 				if (event.key.code == Keyboard::Space) {
 					GameStateChange(GameState::InGame);
+					soundManager.PlaySFX(SFX::button);
 				}
 				if (event.key.code == Keyboard::B) {
 					GameStateChange(GameState::Menu);
+					soundManager.PlaySFX(SFX::button);
 				}
 			}
 		}
@@ -168,8 +174,10 @@ void Game::update() {
 
 		// Collision handling with paddles
 		if (ball.collide(paddle1.getCollider())) {
+			//SFX
+			soundManager.PlaySFX(SFX::bounce);
 			//Determine which direction they collided
-				//TODO
+				//TODO when doing particles...
 
 			// If hitting on side
 			//Reset ball position to Avoid weird stick (temporary)
@@ -186,8 +194,10 @@ void Game::update() {
 			}
 		}
 		else if (ball.collide(paddle2.getCollider())) {
+			//SFX
+			soundManager.PlaySFX(SFX::bounce);
 			//Determine which direction they collided
-				//TODO
+				//TODO when doing particles...
 
 			// If hitting on side
 			//Reset ball position to Avoid weird stick (temporary)
@@ -211,8 +221,11 @@ void Game::update() {
 			else {
 				ball.setPosition(Vector2f(ball.getPosition().x, GameHeight - ball.getSize().y-0.1f));
 			}
+			soundManager.PlaySFX(SFX::bounce);
 		} // If goal
 		else if (!goal && (ball.getPosition().x <= 0 || ball.getPosition().x >= (GameHeight - ball.getSize().x))) {
+			//SFX
+			soundManager.PlaySFX(SFX::goal);
 			// Trigger respawn 
 			goal = true;
 			respawnClock.restart();

@@ -10,10 +10,10 @@ AIController::AIController() {
 void AIController::sense(Paddle& paddle, const SquareBall& ball) {
 	//Simplist decision... (to start with)
 	//std::cout << "BallPosition: "<< ball.getPosition().y + ball.getSize().y / 2 << std::endl;
-	if ((ball.getPosition().y+ball.getSize().y/2)+10 < (paddle.getPosition().y+ paddle.getSize().y/2)) {
+	if ((ball.getPosition().y+ball.getSize().y/2)+45 < (paddle.getPosition().y+ paddle.getSize().y/2)) {
 		paddle.setMovementDirection(MovementDirection::Up);
 	}
-	else if ((ball.getPosition().y+ball.getSize().y / 2)-10 > (paddle.getPosition().y + paddle.getSize().y/2)) {
+	else if ((ball.getPosition().y+ball.getSize().y / 2)-45 > (paddle.getPosition().y + paddle.getSize().y/2)) {
 		paddle.setMovementDirection(MovementDirection::Down);
 	}
 	else {
