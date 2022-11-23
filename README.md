@@ -5,8 +5,8 @@ Thank you for playing!
 
 Controls
 ===========
-Most controls are guided in game
+Most controls are guided in game  
 [W], [S] - 2P mode left paddle up/down  
-Arrow Up [¡ü] / Down [¡ý] - 1P mode left paddle up/down, 2P mode right paddle up/down, mode Selection
-[Space] - Start Game, Replay the game
-[B] - Back to menu (end game)
+Arrow Up [¡ü] / Down [¡ý] - 1P mode left paddle up/down, 2P mode right paddle up/down, mode Selection  
+[Space] - Start Game, Replay the game  
+[B] - Back to menu (end game)  
