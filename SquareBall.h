@@ -2,6 +2,7 @@
 #define SQUARE_BALL_H
 
 #include "GameObject.h"
+#include "Paddle.h"
 
 namespace gm {
     class SquareBall :
@@ -35,10 +36,10 @@ namespace gm {
         void setVelocity(const sf::Vector2f& velocity);
 
         // Changing velocity direction and maybe magnitude when there's a collision 
-        void Bounce(const sf::FloatRect& other);
+        void Bounce(const Paddle& paddle, int direction);
 
         // overloaded Bounce when it reaches the top/bottom of screen
-        void Bounce();
+        void Bounce(int direction, int GameHeight);
     };
 }
 

@@ -176,51 +176,15 @@ void Game::update() {
 		if (ball.collide(paddle1.getCollider())) {
 			//SFX
 			soundManager.PlaySFX(SFX::bounce);
-			//Determine which direction they collided
-				//TODO when doing particles...
-
-			// If hitting on side
-			//Reset ball position to Avoid weird stick (temporary)
-			ball.setPosition(Vector2f(paddle1.getPosition().x + paddle1.getSize().x + 0.1f, ball.getPosition().y));
-			//Regular situation: bump back with a speedup and a slight angle change
-			if (paddle1.getMovementDirection() == MovementDirection::Up) {
-				ball.setVelocity(Vector2f((-1) * (ball.getVelocity().x - 40), ball.getVelocity().y - 70));
-			}
-			else if (paddle1.getMovementDirection() == MovementDirection::Down) {
-				ball.setVelocity(Vector2f((-1) * (ball.getVelocity().x - 40), ball.getVelocity().y + 70));
-			}
-			else {
-				ball.setVelocity(Vector2f((-1) * (ball.getVelocity().x - 40), ball.getVelocity().y));
-			}
+			ball.Bounce(paddle1, -1);
 		}
 		else if (ball.collide(paddle2.getCollider())) {
 			//SFX
 			soundManager.PlaySFX(SFX::bounce);
-			//Determine which direction they collided
-				//TODO when doing particles...
-
-			// If hitting on side
-			//Reset ball position to Avoid weird stick (temporary)
-			ball.setPosition(Vector2f(paddle2.getPosition().x - ball.getSize().x - 0.1f, ball.getPosition().y));
-
-			if (paddle2.getMovementDirection() == MovementDirection::Up) {
-				ball.setVelocity(Vector2f((-1) * (ball.getVelocity().x + 40), ball.getVelocity().y - 70));
-			}
-			else if (paddle2.getMovementDirection() == MovementDirection::Down) {
-				ball.setVelocity(Vector2f((-1) * (ball.getVelocity().x + 40), ball.getVelocity().y + 70));
-			}
-			else {
-				ball.setVelocity(Vector2f((-1) * (ball.getVelocity().x + 40), ball.getVelocity().y));
-			}
+			ball.Bounce(paddle2, 1);
 		} // If hitting up or down edge
 		else if (ball.getPosition().y <= 0 || ball.getPosition().y >= (GameHeight - ball.getSize().y)) {
-			ball.setVelocity(Vector2f(ball.getVelocity().x, (-1) * ball.getVelocity().y));
-			if (ball.getPosition().y <= 0) {
-				ball.setPosition(Vector2f(ball.getPosition().x, 0.1f));
-			}
-			else {
-				ball.setPosition(Vector2f(ball.getPosition().x, GameHeight - ball.getSize().y-0.1f));
-			}
+			ball.Bounce(ball.getPosition().y <= 0, GameHeight);
 			soundManager.PlaySFX(SFX::bounce);
 		} // If goal
 		else if (!goal && (ball.getPosition().x <= 0 || ball.getPosition().x >= (GameHeight - ball.getSize().x))) {
